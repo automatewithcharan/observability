@@ -1,0 +1,41 @@
+deploymentMode: SingleBinary
+
+loki:
+  auth_enabled: false
+  commonConfig:
+    replication_factor: 1
+  storage:
+    type: gcs
+    bucketNames:
+      chunks: loki-nbss
+      ruler: loki-nbss
+      admin: loki-nbss
+    gcs:
+      bucketName: loki-nbss
+  schemaConfig:
+    configs:
+      - from: 2024-01-01
+        store: boltdb-shipper
+        object_store: gcs
+        schema: v13
+        index:
+          prefix: index_
+          period: 24h
+  server:
+    http_listen_port: 3100
+
+singleBinary:
+  replicas: 1
+
+extraEnv:
+  - name: GOOGLE_APPLICATION_CREDENTIALS
+    value: /var/secrets/gcs/gcs.json
+
+extraVolumes:
+  - name: gcs-secret
+    secret:
+      secretName: gcs-credentials
+extraVolumeMounts:
+  - name: gcs-secret
+    mountPath: /var/secrets/gcs
+    readOnly: true

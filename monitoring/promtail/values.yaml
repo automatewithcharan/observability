@@ -1,0 +1,5 @@
+config:
+  clients:
+    - url: http://loki.monitoring.svc.cluster.local:3100/loki/api/v1/push
+  snippets:
+    pipelineStages: []  # Add JSON or log parsing stages later if needed
