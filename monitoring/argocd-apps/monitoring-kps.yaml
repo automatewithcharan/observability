@@ -11,8 +11,8 @@ spec:
     targetRevision: 62.3.0
     helm:
       valueFiles:
-        - monitoring/kube-prometheus-stack/values-base.yaml
-        - monitoring/kube-prometheus-stack/values-prod.yaml
+        - kube-prometheus-stack/values-base.yaml
+        - kube-prometheus-stack/values-prod.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
