@@ -1,17 +1,15 @@
 deploymentMode: SingleBinary
 
+serviceAccount:
+  create: false
+  name: loki-sa
+
 loki:
   auth_enabled: false
   commonConfig:
     replication_factor: 1
-  storage:
-    type: gcs
-    bucketNames:
-      chunks: loki-nbss
-      ruler: loki-nbss
-      admin: loki-nbss
-    gcs:
-      bucketName: loki-nbss
+  server:
+    http_listen_port: 3100
   schemaConfig:
     configs:
       - from: 2024-01-01
@@ -21,21 +19,13 @@ loki:
         index:
           prefix: index_
           period: 24h
-  server:
-    http_listen_port: 3100
+  storage_config:
+    gcs:
+      bucket_name: loki-nbss
+    boltdb_shipper:
+      active_index_directory: /var/loki/index
+      cache_location: /var/loki/cache
+      shared_store: gcs
 
 singleBinary:
   replicas: 1
-
-extraEnv:
-  - name: GOOGLE_APPLICATION_CREDENTIALS
-    value: /var/secrets/gcs/gcs.json
-
-extraVolumes:
-  - name: gcs-secret
-    secret:
-      secretName: gcs-credentials
-extraVolumeMounts:
-  - name: gcs-secret
-    mountPath: /var/secrets/gcs
-    readOnly: true

@@ -1,6 +1,12 @@
+serviceAccounts:
+  prometheus:
+    name: prometheus-sa
+    create: false
+
 prometheus:
   prometheusSpec:
     retention: 15d
+    serviceAccountName: prometheus-sa
     storageSpec:
       volumeClaimTemplate:
         spec:
@@ -12,8 +18,10 @@ prometheus:
     thanos:
       create: true
       objectStorageConfig:
-        name: gcs-credentials
-        key: gcs.json
+        type: GCS
+        config:
+          bucket: prometheus-nbss
+          service_account: prometheus-gcs@nbss-test-project.iam.gserviceaccount.com
 
 alertmanager:
   alertmanagerSpec:
