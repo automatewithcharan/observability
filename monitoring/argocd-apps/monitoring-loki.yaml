@@ -5,13 +5,16 @@ metadata:
   namespace: argocd
 spec:
   project: default
-  source:
-    repoURL: https://grafana.github.io/helm-charts
+  sources:
+  - repoURL: https://grafana.github.io/helm-charts
     chart: loki
     targetRevision: 6.6.0
     helm:
       valueFiles:
-        - monitoring/loki/values.yaml
+      - $values/monitoring/loki/values.yaml
+  - repoURL: https://github.com/automatewithcharan/observability.git
+    targetRevision: main
+    ref: values
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring

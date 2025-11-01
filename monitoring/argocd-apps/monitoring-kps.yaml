@@ -5,13 +5,17 @@ metadata:
   namespace: argocd
 spec:
   project: default
-  source:
-    repoURL: https://prometheus-community.github.io/helm-charts
+  sources:
+  - repoURL: https://prometheus-community.github.io/helm-charts
     chart: kube-prometheus-stack
     targetRevision: 62.3.0
     helm:
       valueFiles:
-        - monitoring/kube-prometheus-stack/values-base.yaml
+      - $values/monitoring/kube-prometheus-stack/values-base.yaml
+      - $values/monitoring/kube-prometheus-stack/values-prod.yaml
+  - repoURL: https://github.com/automatewithcharan/observability.git
+    targetRevision: main
+    ref: values
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
