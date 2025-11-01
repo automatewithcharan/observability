@@ -17,15 +17,20 @@ loki:
         object_store: gcs
         schema: v13
         index:
-          prefix: index_
+          prefix: loki_index_
           period: 24h
   storage_config:
+    boltdb_shipper:
+      shared_store: gcs
     gcs:
       bucket_name: loki-nbss
-    boltdb_shipper:
-      active_index_directory: /var/loki/index
-      cache_location: /var/loki/cache
-      shared_store: gcs
 
 singleBinary:
   replicas: 1
+
+resources:
+  requests:
+    cpu: 200m
+    memory: 512Mi
+  limits:
+    memory: 1Gi
