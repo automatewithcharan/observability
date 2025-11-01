@@ -12,7 +12,6 @@ spec:
     helm:
       valueFiles:
       - $values/monitoring/kube-prometheus-stack/values-base.yaml
-      - $values/monitoring/kube-prometheus-stack/values-prod.yaml
   - repoURL: https://github.com/automatewithcharan/observability.git
     targetRevision: main
     ref: values
